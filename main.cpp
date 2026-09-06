@@ -1,0 +1,141 @@
+#include <iostream>
+#include "ShippingComponent.h"
+#include "ShipmentGroup.h"
+#include "Package.h"
+#include "BFSIterator.h"
+
+int main()
+{
+    std::cout << "=== Setting up Logistics Hierarchy ===" << std::endl;
+
+    // Level 0: Root Container
+    ShipmentGroup *rootCargo = new ShipmentGroup(150.0, 5000.0, "Cape Town", 5);
+
+    // Level 1: Regional Crates / Sub-groups
+    ShipmentGroup *crateA = new ShipmentGroup(40.0, 1200.0, "Bloemfontein", 3);
+    ShipmentGroup *crateB = new ShipmentGroup(60.0, 2500.0, "Cape Town", 4);
+
+    // Level 2: Pallet inside Crate B (creates 3 levels of nesting below root)
+    ShipmentGroup *palletB1 = new ShipmentGroup(30.0, 1500.0, "Cape Town", 2);
+
+    // Level 2 & 3: Concrete Packages (Leaves)
+    Package *pkg1 = new Package(10.0, 300.0, "Bloemfontein", 2);
+    Package *pkg2 = new Package(15.0, 450.0, "Kimberley", 3);
+    Package *pkg3 = new Package(5.0, 800.0, "Cape Town", 1);
+    Package *pkg4 = new Package(8.0, 600.0, "Cape Town", 1);
+
+    // Assemble Crate A
+    crateA->Add(pkg1);
+    crateA->Add(pkg2);
+
+    // Assemble Crate B
+    palletB1->Add(pkg3);
+    palletB1->Add(pkg4);
+    crateB->Add(palletB1);
+
+    // Assemble Root
+    rootCargo->Add(crateA);
+    rootCargo->Add(crateB);
+
+    std::cout << "\n=== Testing BFSIterator (Grouped by Levels) ===" << std::endl;
+
+    // Traverse and collect items using your unmodified BFSIterator
+    Iterator *it = rootCargo->createBFSIterator();
+    std::vector<ShippingComponent *> allNodes;
+    for (it->first(); !it->isDone(); it->next())
+    {
+        allNodes.push_back(it->currentComponent());
+    }
+
+    // Reconstruct the level groupings from the root down
+    if (!allNodes.empty())
+    {
+        std::queue<ShippingComponent *> q;
+        q.push(rootCargo);
+
+        int level = 0;
+        while (!q.empty())
+        {
+            int levelSize = q.size();
+            std::cout << "\n--- Level " << level++ << " ---" << std::endl;
+
+            for (int i = 0; i < levelSize; ++i)
+            {
+                ShippingComponent *node = q.front();
+                q.pop();
+
+                std::cout << "  * " << node->getDestination()
+                          << " | " << node->getWeight() << " kg"
+                          << " | Cost: R" << node->getCost()
+                          << " | Est: " << node->getDeliveryTime() << " days"
+                          << std::endl;
+
+                // Enqueue immediate children for the next level
+                int childIdx = 0;
+                ShippingComponent *child = node->GetChild(childIdx);
+                while (child != nullptr)
+                {
+                    q.push(child);
+                    childIdx++;
+                    child = node->GetChild(childIdx);
+                }
+            }
+        }
+    }
+
+    std::cout << "\n=== Testing Traversal Reset (first) ===" << std::endl;
+    it->first();
+    if (!it->isDone() && it->currentComponent() != nullptr)
+    {
+        std::cout << "Successfully reset to root: ";
+        it->currentComponent()->Operation();
+    }
+
+    std::cout << "\n=== Testing DestinationIterator (Filter: 'Cape Town') ===" << std::endl;
+    // Instantiate via aggregate factory method or direct constructor
+    Iterator *destIt = rootCargo->createDestinationIterator("Cape Town");
+
+    int matchCount = 1;
+    for (destIt->first(); !destIt->isDone(); destIt->next())
+    {
+        ShippingComponent *item = destIt->currentComponent();
+        if (item != nullptr)
+        {
+            std::cout << "[" << matchCount++ << "] "
+                      << item->getDestination()
+                      << " | " << item->getWeight() << " kg"
+                      << " | Cost: R" << item->getCost()
+                      << " | Est: " << item->getDeliveryTime() << " days"
+                      << std::endl;
+        }
+    }
+
+    std::cout << "\n=== Testing DestinationIterator (Filter: 'Kimberley') ===" << std::endl;
+    Iterator *kimberleyIt = rootCargo->createDestinationIterator("Kimberley");
+
+    matchCount = 1;
+    for (kimberleyIt->first(); !kimberleyIt->isDone(); kimberleyIt->next())
+    {
+        ShippingComponent *item = kimberleyIt->currentComponent();
+        if (item != nullptr)
+        {
+            std::cout << "[" << matchCount++ << "] "
+                      << item->getDestination()
+                      << " | " << item->getWeight() << " kg"
+                      << " | Cost: R" << item->getCost()
+                      << " | Est: " << item->getDeliveryTime() << " days"
+                      << std::endl;
+        }
+    }
+
+    // Clean up destination iterators
+    delete destIt;
+    delete kimberleyIt;
+
+    // Clean up
+    delete it;        // Delete the iterator first
+    delete rootCargo; // ShipmentGroup destructor recursively deletes all children
+
+    std::cout << "\nMemory cleaned up safely." << std::endl;
+    return 0;
+}
