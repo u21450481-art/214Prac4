@@ -12,7 +12,8 @@ class ShipmentGroup : public ShippingComponent {
         std::vector<ShippingComponent*> children;
 
     public:
-        ShipmentGroup(double weight, double cost, const std::string& destination);
+        ShipmentGroup(double weight, double cost, const std::string& destination,
+                      int deliveryTime);
 
         virtual ~ShipmentGroup();
 
@@ -21,6 +22,10 @@ class ShipmentGroup : public ShippingComponent {
         virtual void Add(ShippingComponent* c);
         virtual void Remove(ShippingComponent* c);
         virtual ShippingComponent* GetChild(int index);
+
+        virtual double getWeight() const;
+        virtual double getCost() const;
+        virtual int getDeliveryTime() const;
 };
 
 #endif

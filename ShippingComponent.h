@@ -11,8 +11,10 @@ class ShippingComponent {
         double weight;
         double cost;
         std::string destination;
+        int deliveryTime;
 
-        ShippingComponent(double weight, double cost, const std::string& destination);
+        ShippingComponent(double weight, double cost, const std::string& destination,
+                          int deliveryTime);
 
     public:
         virtual ~ShippingComponent();
@@ -23,6 +25,12 @@ class ShippingComponent {
         virtual void Remove(ShippingComponent* c);
         virtual ShippingComponent* GetChild(int index);
         virtual Iterator* createIterator();
+
+        virtual double getWeight() const;
+        virtual double getCost() const;
+        virtual std::string getDestination() const;
+        virtual int getDeliveryTime() const;
+        virtual void setDeliveryTime(int deliveryTime);
 };
 
 #endif
