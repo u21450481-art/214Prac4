@@ -11,7 +11,8 @@ class ShippingComponent {
         double weight;
         double cost;
         std::string destination;
-        int deliveryTime;
+        int deliveryTime;   /* the estimate: never changes as days pass */
+        int timeRemaining;  /* the countdown: starts at deliveryTime */
 
         ShippingComponent(double weight, double cost, const std::string& destination,
                           int deliveryTime);
@@ -31,6 +32,9 @@ class ShippingComponent {
         virtual std::string getDestination() const;
         virtual int getDeliveryTime() const;
         virtual void setDeliveryTime(int deliveryTime);
+
+        virtual int getTimeRemaining() const;
+        virtual void advanceDay();
 };
 
 #endif

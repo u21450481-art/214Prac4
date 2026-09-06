@@ -26,6 +26,8 @@ class ShipmentGroup : public ShippingComponent {
         virtual double getWeight() const;
         virtual double getCost() const;
         virtual int getDeliveryTime() const;
+        virtual int getTimeRemaining() const;
+        virtual void advanceDay();
 };
 
 #endif

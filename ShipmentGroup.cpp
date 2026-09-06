@@ -78,3 +78,30 @@ int ShipmentGroup::getDeliveryTime() const {
     }
     return this->deliveryTime + slowest;
 }
+
+int ShipmentGroup::getTimeRemaining() const {
+    int slowest = 0;
+    for (unsigned int i = 0; i < this->children.size(); i++) {
+        int childTime = this->children[i]->getTimeRemaining();
+        if (childTime > slowest) {
+            slowest = childTime;
+        }
+    }
+    return this->timeRemaining + slowest;
+}
+
+/*
+ * Handling happens before transit, not at the same time: the group works off its
+ * own countdown first and only then lets the children move. Decrementing both in
+ * one call would take two days off the total for one day elapsed.
+ */
+void ShipmentGroup::advanceDay() {
+    if (this->timeRemaining > 0) {
+        this->timeRemaining--;
+        return;
+    }
+
+    for (unsigned int i = 0; i < this->children.size(); i++) {
+        this->children[i]->advanceDay();
+    }
+}
