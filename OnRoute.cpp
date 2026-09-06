@@ -13,16 +13,12 @@ void OnRoute::delay(PackageJourney& journey) {
 }
 
 void OnRoute::deliver(PackageJourney& journey) {
-    if (journey.isDeliveryDue()) {
-        journey.changeState(new Delayed());
-    } else {
-        journey.changeState(new Delivered());
-    }
+    journey.changeState(new Delivered());
 }
 
 void OnRoute::checkDeliveryTime(PackageJourney& journey)
 {
     if (journey.isDeliveryDue()) {
-        journey.changeState(new Delayed());
+        journey.changeState(new Delivered());
     }
 }

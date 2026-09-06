@@ -48,9 +48,8 @@ void PackageJourney::deliver() {
 
 //used as guards for state transitions
 void PackageJourney::advanceDay() {
-    if (this->package != NULL && this->package->getDeliveryTime() > 0)
-    {
-        this->package->setDeliveryTime(this->package->getDeliveryTime() - 1);
+    if (this->package != NULL) {
+        this->package->advanceDay();
     }
 
     this->checkDeliveryTime();
@@ -69,14 +68,14 @@ void PackageJourney::showStatus() const {
 
     if (this->package != NULL) {
         std::cout << "Delivery time remaining: "
-                  << this->package->getDeliveryTime() << " days" << std::endl;
+                  << this->package->getTimeRemaining() << " days" << std::endl;
         this->package->Operation();
     }
 }
 
 //returns true if the package is suppossed to be delivered today
 bool PackageJourney::isDeliveryDue() const {
-    return this->package != NULL && this->package->getDeliveryTime() <= 0;
+    return this->package != NULL && this->package->getTimeRemaining() <= 0;
 }
 
 //returns the package being tracked by this journey

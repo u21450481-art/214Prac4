@@ -61,6 +61,16 @@ int PackageDecorator::getDeliveryTime() const {
     return this->component == NULL ? 0 : this->component->getDeliveryTime();
 }
 
+int PackageDecorator::getTimeRemaining() const {
+    return this->component == NULL ? 0 : this->component->getTimeRemaining();
+}
+
+void PackageDecorator::advanceDay() {
+    if (this->component != NULL) {
+        this->component->advanceDay();
+    }
+}
+
 void PackageDecorator::setDeliveryTime(int deliveryTime) {
     if (this->component != NULL) {
         this->component->setDeliveryTime(deliveryTime);

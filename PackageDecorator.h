@@ -28,6 +28,8 @@ class PackageDecorator : public ShippingComponent { //AbstarctDecorator
         virtual double getCost() const;
         virtual std::string getDestination() const;
         virtual int getDeliveryTime() const;
+        virtual int getTimeRemaining() const;
+        virtual void advanceDay();
 
         //setters
         virtual void setDeliveryTime(int deliveryTime);
