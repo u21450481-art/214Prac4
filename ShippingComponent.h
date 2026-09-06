@@ -40,6 +40,7 @@ public:
 
     virtual Iterator *createBFSIterator();
     virtual Iterator *createDestinationIterator(const std::string &destination);
+    virtual Iterator *createCostFilterIterator(double threshold);
 };
 
 #endif

@@ -2,6 +2,8 @@
 
 #include "BFSIterator.h"
 #include "DestinationIterator.h"
+#include "CostFilterIterator.h"
+
 #include <iomanip>
 #include <iostream>
 
@@ -31,4 +33,9 @@ Iterator *Package::createBFSIterator()
 Iterator *Package::createDestinationIterator(const std::string &destination)
 {
     return new DestinationIterator(this, destination);
+}
+
+Iterator *Package::createCostFilterIterator(double threshold)
+{
+    return new CostFilterIterator(this, threshold);
 }

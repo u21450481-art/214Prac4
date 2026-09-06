@@ -106,3 +106,8 @@ Iterator *PackageDecorator::createDestinationIterator(const std::string &dest)
 {
     return component ? component->createDestinationIterator(dest) : nullptr;
 }
+
+Iterator *PackageDecorator::createCostFilterIterator(double threshold)
+{
+    return component ? component->createCostFilterIterator(threshold) : nullptr;
+}

@@ -39,6 +39,7 @@ public:
 
     virtual Iterator *createBFSIterator() override;
     virtual Iterator *createDestinationIterator(const std::string &destination) override;
+    virtual Iterator *createCostFilterIterator(double threshold) override;
 };
 
 // ConcreteDecorators have added Cost, Weight and deliveryTime (in the getters) to simulate extra care and manpower required to handle said packages

@@ -1,8 +1,35 @@
-#include <iostream>
+// Base Abstractions & Interfaces
 #include "ShippingComponent.h"
+#include "Iterator.h"
+#include "PackageState.h"
+
+// Concrete Iterators
+#include "BFSIterator.h"
+#include "DestinationIterator.h"
+#include "CostFilterIterator.h"
+
+// Composite Hierarchy
 #include "ShipmentGroup.h"
 #include "Package.h"
-#include "BFSIterator.h"
+
+// Decorators
+#include "PackageDecorator.h"
+#include "Fragile.h"
+#include "Hazardous.h"
+#include "Refridgerated.h"
+
+// State Pattern & Context
+#include "PackageJourney.h"
+#include "NotDelivered.h"
+#include "OnRoute.h"
+#include "Delayed.h"
+#include "Delivered.h"
+
+// Standard Library
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <string>
 
 int main()
 {

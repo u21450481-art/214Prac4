@@ -33,6 +33,7 @@ public:
     // overriding to make the iterators
     virtual Iterator *createBFSIterator() override;
     virtual Iterator *createDestinationIterator(const std::string &destination) override;
+    virtual Iterator *createCostFilterIterator(double threshold) override;
 };
 
 #endif

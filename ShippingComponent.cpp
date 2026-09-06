@@ -2,6 +2,7 @@
 
 #include "DestinationIterator.h"
 #include "BFSIterator.h"
+#include "CostFilterIterator.h"
 
 ShippingComponent::ShippingComponent(double weight, double cost, const std::string &destination,
                                      int deliveryTime)
@@ -78,4 +79,9 @@ Iterator *ShippingComponent::createBFSIterator()
 Iterator *ShippingComponent::createDestinationIterator(const std::string &dest)
 {
     return new DestinationIterator(this, dest);
+}
+
+Iterator *ShippingComponent::createCostFilterIterator(double threshold)
+{
+    return new CostFilterIterator(this, threshold);
 }

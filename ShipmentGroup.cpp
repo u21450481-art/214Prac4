@@ -1,7 +1,7 @@
 #include "ShipmentGroup.h"
 #include "BFSIterator.h"
 #include "DestinationIterator.h"
-
+#include "CostFilterIterator.h"
 #include <iomanip>
 #include <iostream>
 
@@ -143,4 +143,9 @@ Iterator *ShipmentGroup::createBFSIterator()
 Iterator *ShipmentGroup::createDestinationIterator(const std::string &dest)
 {
     return new DestinationIterator(this, dest);
+}
+
+Iterator *ShipmentGroup::createCostFilterIterator(double threshold)
+{
+    return new CostFilterIterator(this, threshold);
 }

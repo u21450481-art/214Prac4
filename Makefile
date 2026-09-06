@@ -18,7 +18,8 @@ SRCS = main.cpp \
        OnRoute.cpp \
        Delayed.cpp \
        Delivered.cpp \
-       PackageJourney.cpp
+       PackageJourney.cpp \
+       CostFilterIterator.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
