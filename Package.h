@@ -8,7 +8,7 @@
 class Package : public ShippingComponent {
 
     public:
-        Package(double weight, double cost, const std::string& destination);
+        Package(double weight, double cost, const std::string& destination, int deliveryTime);
 
         virtual ~Package();
 
