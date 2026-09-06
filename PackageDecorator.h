@@ -35,4 +35,6 @@ class PackageDecorator : public ShippingComponent { //AbstarctDecorator
         virtual void setDeliveryTime(int deliveryTime);
 };
 
+//ConcreteDecorators have added Cost, Weight and deliveryTime (in the getters) to simulate extra care and manpower required to handle said packages
+
 #endif

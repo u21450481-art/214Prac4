@@ -10,6 +10,10 @@ class Hazardous : public PackageDecorator { //ConcreteDecorator
 
     public:
         Hazardous(ShippingComponent* component);
+
+        double getWeight() const override;
+        double getCost() const override;
+        int getDeliveryTime() const override;
 };
 
 #endif

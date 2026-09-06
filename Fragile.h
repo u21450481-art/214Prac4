@@ -10,6 +10,10 @@ class Fragile : public PackageDecorator { //ConcreteDecorator
 
     public:
         Fragile(ShippingComponent* component);
+
+        double getWeight() const override;
+        double getCost() const override;
+        int getDeliveryTime() const override;
 };
 
 #endif
