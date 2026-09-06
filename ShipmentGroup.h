@@ -1,0 +1,33 @@
+#ifndef SHIPMENTGROUP_H
+#define SHIPMENTGROUP_H
+
+#include <string>
+#include <vector>
+
+#include "ShippingComponent.h"
+
+class ShipmentGroup : public ShippingComponent {
+
+    private:
+        std::vector<ShippingComponent*> children;
+
+    public:
+        ShipmentGroup(double weight, double cost, const std::string& destination,
+                      int deliveryTime);
+
+        virtual ~ShipmentGroup();
+
+        virtual void Operation();
+
+        virtual void Add(ShippingComponent* c);
+        virtual void Remove(ShippingComponent* c);
+        virtual ShippingComponent* GetChild(int index);
+
+        virtual double getWeight() const;
+        virtual double getCost() const;
+        virtual int getDeliveryTime() const;
+        virtual int getTimeRemaining() const;
+        virtual void advanceDay();
+};
+
+#endif
