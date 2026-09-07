@@ -31,29 +31,41 @@
 #include <queue>
 #include <string>
 
+// --- Color Constants ---
+const std::string RESET = "\033[0m";
+const std::string BOLD = "\033[1m";
+const std::string RED = "\033[31m";
+const std::string GREEN = "\033[32m";
+const std::string YELLOW = "\033[33m";
+const std::string BLUE = "\033[34m";
+const std::string MAGENTA = "\033[35m";
+const std::string CYAN = "\033[36m";
+
 void printShippingComponent(ShippingComponent *node)
 {
-    std::cout << "  * " << node->getDestination()
+    std::cout << "  * " << CYAN << node->getDestination() << RESET
               << " | " << node->getWeight() << " kg"
-              << " | Cost: R" << node->getCost()
-              << " | Est: " << node->getDeliveryTime() << " days"
+              << " | Cost: " << GREEN << "R" << node->getCost() << RESET
+              << " | Est: " << YELLOW << node->getDeliveryTime() << " days" << RESET
               << std::endl;
 }
 
 void printComponentInfo(const std::string &label, ShippingComponent *component)
 {
-    std::cout << "\n=== " << label << " ===\n";
-    std::cout << "Destination: " << component->getDestination() << "\n";
+    std::cout << "\n"
+              << BOLD << MAGENTA << "=== " << label << " ===" << RESET << "\n";
+    std::cout << "Destination: " << CYAN << component->getDestination() << RESET << "\n";
     std::cout << "Weight: " << component->getWeight() << " kg\n";
-    std::cout << "Cost: R" << component->getCost() << "\n";
-    std::cout << "Estimated delivery time: " << component->getDeliveryTime() << " days\n";
-    std::cout << "Time remaining: " << component->getTimeRemaining() << " days\n";
+    std::cout << "Cost: " << GREEN << "R" << component->getCost() << RESET << "\n";
+    std::cout << "Estimated delivery time: " << YELLOW << component->getDeliveryTime() << " days" << RESET << "\n";
+    std::cout << "Time remaining: " << YELLOW << component->getTimeRemaining() << " days" << RESET << "\n";
     component->Operation();
 }
 
 void runCompositeWorkflow()
 {
-    std::cout << "\n=== Composite workflow ===\n";
+    std::cout << "\n"
+              << BOLD << BLUE << "=== Composite workflow ===" << RESET << "\n";
 
     ShipmentGroup *warehouse = new ShipmentGroup(150.0, 5000.0, "Cape Town", 5);
     ShipmentGroup *regional = new ShipmentGroup(80.0, 2200.0, "Bloemfontein", 3);
@@ -77,14 +89,16 @@ void runCompositeWorkflow()
     printComponentInfo("Cold chain summary", coldChain);
 
     std::cout << "\nWarehouse child count before removal: " << (warehouse->GetChild(0) != nullptr) + (warehouse->GetChild(1) != nullptr) << "\n";
-    std::cout << "Regional first child destination: " << regional->GetChild(0)->getDestination() << "\n";
-    std::cout << "Cold chain second child destination: " << coldChain->GetChild(1)->getDestination() << "\n";
+    std::cout << "Regional first child destination: " << CYAN << regional->GetChild(0)->getDestination() << RESET << "\n";
+    std::cout << "Cold chain second child destination: " << CYAN << coldChain->GetChild(1)->getDestination() << RESET << "\n";
 
-    std::cout << "\n--- Advancing time through the structure ---\n";
+    std::cout << "\n"
+              << BOLD << "--- Advancing time through the structure ---" << RESET << "\n";
     warehouse->advanceDay();
-    std::cout << "Warehouse time remaining after one day: " << warehouse->getTimeRemaining() << " days\n";
+    std::cout << "Warehouse time remaining after one day: " << YELLOW << warehouse->getTimeRemaining() << " days" << RESET << "\n";
 
-    std::cout << "\n--- Removing a branch from the warehouse ---\n";
+    std::cout << "\n"
+              << BOLD << "--- Removing a branch from the warehouse ---" << RESET << "\n";
     warehouse->Remove(regional);
     std::cout << "Warehouse child count after removal: " << (warehouse->GetChild(0) != nullptr) + (warehouse->GetChild(1) != nullptr) << "\n";
 
@@ -93,7 +107,8 @@ void runCompositeWorkflow()
 
 void runStateWorkflow()
 {
-    std::cout << "\n=== State workflow ===\n";
+    std::cout << "\n"
+              << BOLD << BLUE << "=== State workflow ===" << RESET << "\n";
 
     Package parcel(5.5, 260.0, "Pretoria", 2);
     PackageJourney journey(&parcel);
@@ -101,19 +116,23 @@ void runStateWorkflow()
     std::cout << "Initial status: " << journey.status() << "\n";
     journey.showStatus();
 
-    std::cout << "\nDispatch package\n";
+    std::cout << "\n"
+              << MAGENTA << "Dispatch package" << RESET << "\n";
     journey.dispatch();
     journey.showStatus();
 
-    std::cout << "\nDelay package\n";
+    std::cout << "\n"
+              << RED << "Delay package" << RESET << "\n";
     journey.delay();
     journey.showStatus();
 
-    std::cout << "\nResume package\n";
+    std::cout << "\n"
+              << YELLOW << "Resume package" << RESET << "\n";
     journey.resume();
     journey.showStatus();
 
-    std::cout << "\nDeliver package\n";
+    std::cout << "\n"
+              << GREEN << "Deliver package" << RESET << "\n";
     journey.deliver();
     journey.showStatus();
 
@@ -123,12 +142,12 @@ void runStateWorkflow()
     urgentJourney.dispatch();
     urgentJourney.advanceDay();
     urgentJourney.showStatus();
-    std::cout << "Urgent parcel due today? " << (urgentJourney.isDeliveryDue() ? "Yes" : "No") << "\n";
+    std::cout << "Urgent parcel due today? " << (urgentJourney.isDeliveryDue() ? GREEN + "Yes" : RED + "No") << RESET << "\n";
 }
 
 int main()
 {
-    std::cout << "=== Setting up Logistics Hierarchy ===" << std::endl;
+    std::cout << BOLD << BLUE << "=== Setting up Logistics Hierarchy ===" << RESET << std::endl;
 
     // Level 0
     ShipmentGroup *rootCargo = new ShipmentGroup(150.0, 5000.0, "Cape Town", 5);
@@ -156,7 +175,8 @@ int main()
     rootCargo->Add(crateA);
     rootCargo->Add(crateB);
 
-    std::cout << "\n=== Testing BFSIterator ===" << std::endl;
+    std::cout << "\n"
+              << BOLD << BLUE << "=== Testing BFSIterator ===" << RESET << std::endl;
 
     // Traverse and collect items using your unmodified BFSIterator
     Iterator *it = rootCargo->createBFSIterator();
@@ -176,7 +196,8 @@ int main()
         while (!q.empty())
         {
             int levelSize = q.size();
-            std::cout << "\n--- Level " << level++ << " ---" << std::endl;
+            std::cout << "\n"
+                      << MAGENTA << "--- Level " << level++ << " ---" << RESET << std::endl;
 
             for (int i = 0; i < levelSize; ++i)
             {
@@ -197,15 +218,17 @@ int main()
         }
     }
 
-    std::cout << "\n=== Testing Traversal Reset (first) ===" << std::endl;
+    std::cout << "\n"
+              << BOLD << BLUE << "=== Testing Traversal Reset (first) ===" << RESET << std::endl;
     it->first();
     if (!it->isDone() && it->currentComponent() != nullptr)
     {
-        std::cout << "Successfully reset to root: ";
+        std::cout << GREEN << "Successfully reset to root: " << RESET;
         it->currentComponent()->Operation();
     }
 
-    std::cout << "\n=== Testing DestinationIterator (Filter: 'Cape Town') ===" << std::endl;
+    std::cout << "\n"
+              << BOLD << BLUE << "=== Testing DestinationIterator (Filter: 'Cape Town') ===" << RESET << std::endl;
     // Instantiate via aggregate factory method or direct constructor
     Iterator *destIt = rootCargo->createDestinationIterator("Cape Town");
 
@@ -220,7 +243,8 @@ int main()
         }
     }
 
-    std::cout << "\n=== Testing DestinationIterator (Filter: 'Kimberley') ===" << std::endl;
+    std::cout << "\n"
+              << BOLD << BLUE << "=== Testing DestinationIterator (Filter: 'Kimberley') ===" << RESET << std::endl;
     Iterator *kimberleyIt = rootCargo->createDestinationIterator("Kimberley");
 
     matchCount = 1;
@@ -234,7 +258,8 @@ int main()
         }
     }
 
-    std::cout << "\n=== Testing CostFilterIterator (threshold:1000) ===" << std::endl;
+    std::cout << "\n"
+              << BOLD << BLUE << "=== Testing CostFilterIterator (threshold: 1000) ===" << RESET << std::endl;
     Iterator *costIterator = rootCargo->createCostFilterIterator(1000);
 
     matchCount = 1;
@@ -256,17 +281,17 @@ int main()
     delete it; // Delete the iterator first
     delete rootCargo;
 
-    std::cout << "\nMemory cleaned up safely." << std::endl;
+    std::cout << "\n"
+              << GREEN << "Memory cleaned up safely." << RESET << std::endl;
 
-
-
-    std::cout << "\n=== Workflow and Stateflow scenario begins ===\n";
+    std::cout << "\n"
+              << BOLD << MAGENTA << "=== Workflow and Stateflow scenario begins ===" << RESET << "\n";
 
     runCompositeWorkflow();
     runStateWorkflow();
 
-    std::cout << "\n=== Workflow and Stateflow scenario complete ===\n";
-
+    std::cout << "\n"
+              << BOLD << MAGENTA << "=== Workflow and Stateflow scenario complete ===" << RESET << "\n";
 
     return 0;
 }
