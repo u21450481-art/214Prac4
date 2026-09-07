@@ -6,28 +6,34 @@
 
 #include "ShippingComponent.h"
 
-class ShipmentGroup : public ShippingComponent {
+class ShipmentGroup : public ShippingComponent
+{
 
-    private:
-        std::vector<ShippingComponent*> children;
+private:
+    std::vector<ShippingComponent *> children;
 
-    public:
-        ShipmentGroup(double weight, double cost, const std::string& destination,
-                      int deliveryTime);
+public:
+    ShipmentGroup(double weight, double cost, const std::string &destination,
+                  int deliveryTime);
 
-        virtual ~ShipmentGroup();
+    virtual ~ShipmentGroup();
 
-        virtual void Operation();
+    virtual void Operation();
 
-        virtual void Add(ShippingComponent* c);
-        virtual void Remove(ShippingComponent* c);
-        virtual ShippingComponent* GetChild(int index);
+    virtual void Add(ShippingComponent *c);
+    virtual void Remove(ShippingComponent *c);
+    virtual ShippingComponent *GetChild(int index);
 
-        virtual double getWeight() const;
-        virtual double getCost() const;
-        virtual int getDeliveryTime() const;
-        virtual int getTimeRemaining() const;
-        virtual void advanceDay();
+    virtual double getWeight() const;
+    virtual double getCost() const;
+    virtual int getDeliveryTime() const;
+    virtual int getTimeRemaining() const;
+    virtual void advanceDay();
+
+    // overriding to make the iterators
+    virtual Iterator *createBFSIterator() override;
+    virtual Iterator *createDestinationIterator(const std::string &destination) override;
+    virtual Iterator *createCostFilterIterator(double threshold) override;
 };
 
 #endif
